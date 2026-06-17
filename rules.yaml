@@ -1,0 +1,162 @@
+entities:
+
+  - entity: ProviderLicense
+    primary_key:
+      - LicenseNumber
+      - State
+    default_action: ACCEPT
+
+    rules:
+      - id: R-LIC-1
+        name: "Reject non-Active licenses"
+        type: record
+        priority: 10
+        condition:
+          field: LicenseStatus/LicenseStatusDescription
+          operator: ne
+          value: Active
+        action: REJECT
+
+      - id: R-LIC-2
+        name: "Reject Active licenses expired as of today"
+        type: record
+        priority: 20
+        condition:
+          field: LicenseStatus/LicenseStatusDescription
+          operator: eq
+          value: Active
+        scriptlet: custom_rules.reject_expired_today
+        action: DEFER
+
+      - id: R-LIC-3
+        name: "Duplicate Active — keep latest expiration"
+        type: group
+        priority: 30
+        condition:
+          min_size: 2
+          member_filter: DEFER
+        action: KEEP_LATEST
+        compare_field: ExpirationDate
+        date_format: "%Y-%m-%dT%H:%M:%S"
+        tie_break: KEEP_FIRST
+
+
+  - entity: ProviderDEA
+    primary_key:
+      - DEANumber
+      - State
+    default_action: ACCEPT
+
+    rules:
+      - id: R-DEA-1
+        name: "Duplicate DEA — keep latest expiration"
+        type: group
+        priority: 10
+        condition:
+          min_size: 2
+          member_filter: ANY
+        action: KEEP_LATEST
+        compare_field: ExpirationDate
+        date_format: "%Y-%m-%dT%H:%M:%S"
+        tie_break: KEEP_FIRST
+
+
+  - entity: ProviderCDS
+    primary_key:
+      - CDSNumber
+      - State
+    default_action: ACCEPT
+
+    rules:
+      - id: R-CDS-1
+        name: "Duplicate CDS — keep latest expiration"
+        type: group
+        priority: 10
+        condition:
+          min_size: 2
+          member_filter: ANY
+        action: KEEP_LATEST
+        compare_field: ExpirationDate
+        date_format: "%Y-%m-%dT%H:%M:%S"
+        tie_break: KEEP_FIRST
+
+
+  - entity: Insurance
+    primary_key:
+      - PolicyNumber
+    default_action: ACCEPT
+
+    rules:
+      - id: R-INS-1
+        name: "Duplicate policy — latest EndDate wins"
+        type: group
+        priority: 10
+        condition:
+          min_size: 2
+          member_filter: ANY
+        action: KEEP_LATEST
+        compare_field: EndDate
+        date_format: "%Y-%m-%dT%H:%M:%S"
+        tie_break: KEEP_ALL
+
+      - id: R-INS-2
+        name: "EndDate tie — highest occurrence amount wins"
+        type: group
+        priority: 20
+        condition:
+          min_size: 2
+          member_filter: ACCEPT
+        action: KEEP_MAX
+        compare_field: CoverageAmountOccurrence
+        tie_break: KEEP_ALL
+
+      - id: R-INS-3
+        name: "Occurrence tie — highest aggregate amount wins"
+        type: group
+        priority: 30
+        condition:
+          min_size: 2
+          member_filter: ACCEPT
+        action: KEEP_MAX
+        compare_field: CoverageAmountAggregate
+        tie_break: KEEP_FIRST
+
+
+  - entity: Education
+    primary_key:
+      - InstitutionName
+      - StartDate
+    default_action: ACCEPT
+
+    rules:
+      - id: R-EDU-1
+        name: "Reject missing institution name"
+        type: record
+        priority: 10
+        condition:
+          field: InstitutionName
+          operator: is_empty
+        action: REJECT
+
+      - id: R-EDU-2
+        name: "Duplicate education — prefer completed record"
+        type: group
+        priority: 20
+        condition:
+          min_size: 2
+          member_filter: ANY
+        action: KEEP_MAX
+        compare_field: ProgramCompletedFlag
+        tie_break: KEEP_ALL
+
+      - id: R-EDU-3
+        name: "Completed tie — keep latest completion date"
+        type: group
+        priority: 30
+        condition:
+          min_size: 2
+          member_filter: ACCEPT
+        action: KEEP_LATEST
+        compare_field: CompletionDate
+        date_format: "%Y-%m-%dT%H:%M:%S"
+        tie_break: KEEP_FIRST

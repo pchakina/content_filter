@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProviderData>
+
+  <ProviderLicense>
+    <LicenseNumber>LIC001</LicenseNumber>
+    <State>CA</State>
+    <LicenseStatus>
+      <LicenseStatusDescription>Active</LicenseStatusDescription>
+    </LicenseStatus>
+    <ExpirationDate>2027-12-31T00:00:00</ExpirationDate>
+  </ProviderLicense>
+
+  <ProviderDEA>
+    <DEANumber>DEA123</DEANumber>
+    <State>CA</State>
+    <ExpirationDate>2028-06-30T00:00:00</ExpirationDate>
+  </ProviderDEA>
+
+  <ProviderCDS>
+    <CDSNumber>CDS456</CDSNumber>
+    <State>CA</State>
+    <ExpirationDate>2029-03-15T00:00:00</ExpirationDate>
+  </ProviderCDS>
+
+  <Insurance>
+    <PolicyNumber>POL001</PolicyNumber>
+    <EndDate>2027-12-31T00:00:00</EndDate>
+    <CoverageAmountOccurrence>1000000</CoverageAmountOccurrence>
+    <CoverageAmountAggregate>2000000</CoverageAmountAggregate>
+  </Insurance>
+
+  <Education>
+    <InstitutionName>Harvard University</InstitutionName>
+    <StartDate>2010-09-01</StartDate>
+    <ProgramCompletedFlag>1</ProgramCompletedFlag>
+    <CompletionDate>2015-06-20T00:00:00</CompletionDate>
+  </Education>
+
+</ProviderData>
