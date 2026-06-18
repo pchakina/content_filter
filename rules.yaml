@@ -26,12 +26,22 @@ entities:
           operator: eq
           value: Active
         scriptlet: custom_rules.reject_expired_today
-        action: DEFER
+        action: REJECT
 
       - id: R-LIC-3
+        name: "Flag remaining Active licenses for dedup"
+        type: record
+        priority: 30
+        condition:
+          field: LicenseStatus/LicenseStatusDescription
+          operator: eq
+          value: Active
+        action: DEFER
+
+      - id: R-LIC-4
         name: "Duplicate Active — keep latest expiration"
         type: group
-        priority: 30
+        priority: 40
         condition:
           min_size: 2
           member_filter: DEFER
