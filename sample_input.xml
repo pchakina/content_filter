@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProviderData>
 
-  <!-- ProviderLicense: 3 records for same license -->
-  <!-- A: Active, future expiry — should ACCEPT -->
   <ProviderLicense>
     <LicenseNumber>LIC001</LicenseNumber>
     <State>CA</State>
@@ -12,7 +10,6 @@
     <ExpirationDate>2027-12-31T00:00:00</ExpirationDate>
   </ProviderLicense>
 
-  <!-- B: Active, same PK, older expiry — should REJECT (dedup) -->
   <ProviderLicense>
     <LicenseNumber>LIC001</LicenseNumber>
     <State>CA</State>
@@ -22,7 +19,6 @@
     <ExpirationDate>2025-06-01T00:00:00</ExpirationDate>
   </ProviderLicense>
 
-  <!-- C: Expired status — should REJECT (R-LIC-1) -->
   <ProviderLicense>
     <LicenseNumber>LIC002</LicenseNumber>
     <State>NY</State>
@@ -32,7 +28,6 @@
     <ExpirationDate>2023-01-01T00:00:00</ExpirationDate>
   </ProviderLicense>
 
-  <!-- D: Active, expired today — should REJECT (scriptlet) -->
   <ProviderLicense>
     <LicenseNumber>LIC003</LicenseNumber>
     <State>TX</State>
@@ -42,41 +37,30 @@
     <ExpirationDate>2020-01-01T00:00:00</ExpirationDate>
   </ProviderLicense>
 
-
-  <!-- ProviderDEA: 2 records, same DEA+State — keep latest -->
-  <!-- E: latest expiry — should ACCEPT -->
   <ProviderDEA>
     <DEANumber>DEA123</DEANumber>
     <State>CA</State>
     <ExpirationDate>2028-06-30T00:00:00</ExpirationDate>
   </ProviderDEA>
 
-  <!-- F: older expiry — should REJECT (dedup) -->
   <ProviderDEA>
     <DEANumber>DEA123</DEANumber>
     <State>CA</State>
     <ExpirationDate>2026-01-01T00:00:00</ExpirationDate>
   </ProviderDEA>
 
-
-  <!-- ProviderCDS: 2 records, same CDS+State — keep latest -->
-  <!-- G: latest expiry — should ACCEPT -->
   <ProviderCDS>
     <CDSNumber>CDS456</CDSNumber>
     <State>CA</State>
     <ExpirationDate>2029-03-15T00:00:00</ExpirationDate>
   </ProviderCDS>
 
-  <!-- H: older expiry — should REJECT (dedup) -->
   <ProviderCDS>
     <CDSNumber>CDS456</CDSNumber>
     <State>CA</State>
     <ExpirationDate>2025-03-15T00:00:00</ExpirationDate>
   </ProviderCDS>
 
-
-  <!-- Insurance: 3 records, same PolicyNumber -->
-  <!-- I: EndDate tie with J, lower occurrence — should REJECT (R-INS-2) -->
   <Insurance>
     <PolicyNumber>POL001</PolicyNumber>
     <EndDate>2027-12-31T00:00:00</EndDate>
@@ -84,7 +68,6 @@
     <CoverageAmountAggregate>1000000</CoverageAmountAggregate>
   </Insurance>
 
-  <!-- J: EndDate tie with I, higher occurrence — should ACCEPT -->
   <Insurance>
     <PolicyNumber>POL001</PolicyNumber>
     <EndDate>2027-12-31T00:00:00</EndDate>
@@ -92,7 +75,6 @@
     <CoverageAmountAggregate>2000000</CoverageAmountAggregate>
   </Insurance>
 
-  <!-- K: older EndDate — should REJECT (R-INS-1) -->
   <Insurance>
     <PolicyNumber>POL001</PolicyNumber>
     <EndDate>2025-06-30T00:00:00</EndDate>
@@ -100,9 +82,6 @@
     <CoverageAmountAggregate>5000000</CoverageAmountAggregate>
   </Insurance>
 
-
-  <!-- Education: 3 records, same Institution+StartDate -->
-  <!-- L: not completed — should REJECT (R-EDU-2) -->
   <Education>
     <InstitutionName>Harvard University</InstitutionName>
     <StartDate>2010-09-01</StartDate>
@@ -110,7 +89,6 @@
     <CompletionDate>2014-05-15T00:00:00</CompletionDate>
   </Education>
 
-  <!-- M: completed, older completion — should REJECT (R-EDU-3) -->
   <Education>
     <InstitutionName>Harvard University</InstitutionName>
     <StartDate>2010-09-01</StartDate>
@@ -118,7 +96,6 @@
     <CompletionDate>2014-05-15T00:00:00</CompletionDate>
   </Education>
 
-  <!-- N: completed, latest completion — should ACCEPT -->
   <Education>
     <InstitutionName>Harvard University</InstitutionName>
     <StartDate>2010-09-01</StartDate>
