@@ -72,15 +72,16 @@ class XmlFilter:
 
     @staticmethod
     def _parse(xml_bytes: bytes) -> tuple[bool, etree._ElementTree]:
+        parser = etree.XMLParser(remove_comments=True)
         try:
-            tree = etree.parse(BytesIO(xml_bytes))
+            tree = etree.parse(BytesIO(xml_bytes), parser)
             XmlFilter._strip_namespaces(tree)
             return False, tree
         except etree.XMLSyntaxError:
             pass
 
         try:
-            tree = etree.parse(BytesIO(b"<Root>\n" + xml_bytes + b"\n</Root>"))
+            tree = etree.parse(BytesIO(b"<Root>\n" + xml_bytes + b"\n</Root>"), parser)
             XmlFilter._strip_namespaces(tree)
             return True, tree
         except etree.XMLSyntaxError as e:
